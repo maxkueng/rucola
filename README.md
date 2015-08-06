@@ -1,7 +1,7 @@
-rucola
+![rucola](images/logo.png)
 ======
 
-A **ru**ntime **co**nfiguration **l**o**a**der heavily inspired by the amazing
+_rucola_ is a **ru**ntime **co**nfiguration **l**o**a**der heavily inspired by the amazing
 [rc][rc] module.
 
 ## Usage
