@@ -330,7 +330,6 @@ describe('rucola', function () {
     it('should provide a list of used configs through .usedConfigs', function () {
 
       var conf = rucola('uctest');
-      console.log(conf.usedConfigs);
 
       expect(conf.usedConfigs).to.be.an.Array;
 
