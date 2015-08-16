@@ -13,8 +13,11 @@ module.exports = function (name, defaults, aliases, argv) {
     throw new Error('name argument must be a string');
   }
 
-  defaults = defaults || {};
   aliases = aliases || {};
+
+  defaults = (typeof defaults === 'string'
+    ? utils.parse(defaults)
+    : defaults) || {};
 
   argv = utils.argv(argv || minimist(process.argv.splice(2), {
     alias: aliases 
