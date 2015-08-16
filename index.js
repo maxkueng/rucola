@@ -36,7 +36,7 @@ module.exports = function (name, defaults, aliases, argv) {
     return utils.parse(content);
   }
 
-  var configs = [
+  var configFiles = [
     !isWin  &&  path.join(etc, name, 'config'),
     !isWin  &&  path.join(etc, name + 'rc'),
     home    &&  path.join(home, '.config', name, 'config'),
@@ -46,12 +46,15 @@ module.exports = function (name, defaults, aliases, argv) {
                 utils.find('.' + name + 'rc'),
                 argv.config
   ]
-    .filter(removeDuplicates)
+    .filter(removeDuplicates);
+
+  var configs = configFiles
     .map(loadConfig)
     .filter(removeFalsy);
 
-  var conf = deepExtend.apply(null, [defaults].concat(configs, env, argv));
+  var conf = deepExtend.apply(null, [utils.normalize(defaults)].concat(configs, env, argv));
 
+  conf.configs = configFiles;
   conf.get = seek.bind(null, conf);
 
   return conf;
