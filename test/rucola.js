@@ -311,4 +311,31 @@ describe('rucola', function () {
   
   });
 
+  describe('.checkedConfigs', function () {
+  
+    it('should provide a list of checked configs through .checkedConfigs', function () {
+
+      var conf = rucola('cctest');
+
+      expect(conf.checkedConfigs).to.be.an.Array;
+      expect(conf.checkedConfigs).to.contain('/etc/cctest/config');
+      expect(conf.checkedConfigs).to.contain('/etc/cctestrc');
+
+    });
+  
+  });
+
+  describe('.usedConfigs', function () {
+  
+    it('should provide a list of used configs through .usedConfigs', function () {
+
+      var conf = rucola('uctest');
+      console.log(conf.usedConfigs);
+
+      expect(conf.usedConfigs).to.be.an.Array;
+
+    });
+  
+  });
+
 });
