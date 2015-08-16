@@ -1,5 +1,7 @@
+var rucola = require('../index');
 var spawn = require('child_process').spawn;
 var path = require('path');
+var fs = require('fs');
 var expect = require('chai').expect;
 
 function runApp (env, args, callback) {
@@ -249,6 +251,49 @@ describe('sample cli app', function () {
 
         done();
       });
+
+    });
+  
+  });
+
+});
+
+describe('rucola', function () {
+
+  describe('defaults as string', function () {
+  
+    it('should read defaults as string in INI format', function () {
+
+      var defaults = fs.readFileSync(path.join(__dirname, 'conf.ini'), 'utf-8');
+      var conf = rucola('initest', defaults);
+
+      expect(conf.animal.insect).to.equal('mantis');
+      expect(conf.animal.spider).to.equal('tarantula');
+      expect(conf.animal.fish).to.equal('catfish');
+
+    });
+
+    it('should read defaults as string in JSON format', function () {
+
+      var defaults = fs.readFileSync(path.join(__dirname, 'conf.json'), 'utf-8');
+      var conf = rucola('jsontest', defaults);
+
+      expect(conf.animal.insect).to.equal('butterfly');
+      expect(conf.animal.spider).to.equal('wolfspider');
+      expect(conf.animal.fish).to.equal('salmon');
+      expect(conf.animal.crab).to.equal('triops');
+
+    });
+
+    it('should read defaults as string in YAML format', function () {
+
+      var defaults = fs.readFileSync(path.join(__dirname, 'conf.yml'), 'utf-8');
+      var conf = rucola('jsontest', defaults);
+
+      expect(conf.animal.insect).to.equal('bee');
+      expect(conf.animal.spider).to.equal('black widow');
+      expect(conf.animal.fish).to.equal('puffer fish');
+      expect(conf.animal.bird).to.equal('phoenix');
 
     });
   
