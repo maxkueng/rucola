@@ -107,6 +107,27 @@ describe('sample cli app', function () {
 
     });
   
+    it('should read values from a specified file in YAML format', function (done) {
+
+      var args = [
+        '--config', './conf.yml'
+      ];
+
+      runApp([], args, function (out) {
+        out = JSON.parse(out);
+
+        expect(out.animal.mammal).to.equal('bear');
+        expect(out.animal.reptile).to.equal('lizard');
+        expect(out.animal.bird).to.equal('phoenix');
+        expect(out.animal.insect).to.equal('bee');
+        expect(out.animal.spider).to.equal('black widow');
+        expect(out.animal.fish).to.equal('puffer fish');
+
+        done();
+      });
+
+    });
+  
     it('should read values from a specified file in JSON format', function (done) {
 
       var args = [
