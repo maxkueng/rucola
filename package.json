@@ -18,6 +18,9 @@
     "index.js",
     "lib/utils.js"
   ],
+  "scripts": {
+    "test": "mocha --ui bdd --reporter spec ./test/rucola.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/maxkueng/rucola.git"
@@ -30,5 +33,9 @@
     "ini": "^1.3.4",
     "minimist": "^1.1.2",
     "strip-json-comments": "^1.0.4"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "animal": {
+    "insect": "butterfly",
+    // here's a comment
+    "spider": "wolfspider",
+    "fish": "salmon",
+    "crab": "triops"
+  }
+}
