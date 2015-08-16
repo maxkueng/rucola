@@ -26,17 +26,31 @@ module.exports = function (name, defaults, aliases, argv) {
     return item && list.indexOf(item) === index;
   }
 
-  function removeFalsy (item) {
-    return !!item;
+  function tupleify (item) {
+    return [ item, null ];
   }
 
-  function loadConfig (filePath) {
+  function detupleify (index) {
+    return function (tuple) {
+      return tuple[index];
+    };
+  }
+
+  function removeFalsy (tuple) {
+    return !!tuple[1];
+  }
+
+  function loadConfig (tuple) {
+    var filePath = tuple[0];
     var content = utils.file(filePath);
-    if (!content) { return null; }
-    return utils.parse(content);
+    if (content) {
+      tuple[1] = utils.parse(content);
+    }
+
+    return tuple;
   }
 
-  var configFiles = [
+  var allConfigFiles = [
     !isWin  &&  path.join(etc, name, 'config'),
     !isWin  &&  path.join(etc, name + 'rc'),
     home    &&  path.join(home, '.config', name, 'config'),
@@ -48,14 +62,35 @@ module.exports = function (name, defaults, aliases, argv) {
   ]
     .filter(removeDuplicates);
 
-  var configs = configFiles
+  var configTuples = allConfigFiles
+    .map(tupleify)
     .map(loadConfig)
     .filter(removeFalsy);
 
-  var conf = deepExtend.apply(null, [utils.normalize(defaults)].concat(configs, env, argv));
+  var usedConfigFiles = configTuples
+    .map(detupleify(0));
 
-  conf.configs = configFiles;
-  conf.get = seek.bind(null, conf);
+  var configValues = configTuples
+    .map(detupleify(1));
+
+  var conf = deepExtend.apply(null, [ utils.normalize(defaults) ].concat(configValues, env, argv));
+
+  Object.defineProperty(conf, 'usedConfigs', {
+    enumerable: false,
+    writable: false,
+    value: usedConfigFiles
+  });
+
+  Object.defineProperty(conf, 'checkedConfigs', {
+    enumerable: false,
+    writable: false,
+    value: allConfigFiles
+  });
+
+  Object.defineProperty(conf, 'get', {
+    enumerable: false,
+    value: seek.bind(null, conf)
+  });
 
   return conf;
 };
