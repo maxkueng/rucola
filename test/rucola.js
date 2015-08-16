@@ -299,4 +299,16 @@ describe('rucola', function () {
   
   });
 
+  describe('.get()', function () {
+  
+    it('should retreive values using .get(keyPath)', function () {
+      var defaults = fs.readFileSync(path.join(__dirname, 'conf.yml'), 'utf-8');
+      var conf = rucola('gettest', defaults);
+
+      expect(conf.get('animal.insect')).to.equal('bee');
+      expect(conf.get('animal.dragon')).to.be.undefined;
+    });
+  
+  });
+
 });
