@@ -34,6 +34,7 @@ describe('sample cli app', function () {
     it('should read values from defaults', function (done) {
 
       runApp([], [], function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.colors.blue).to.equal('#0000FF');
@@ -52,6 +53,7 @@ describe('sample cli app', function () {
     it('should read values from a standard config path', function (done) {
 
       runApp([], [], function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -74,6 +76,7 @@ describe('sample cli app', function () {
       };
 
       runApp(env, [], function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.capital.china).to.equal('beijing');
@@ -100,6 +103,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -121,6 +125,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -142,6 +147,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -170,6 +176,7 @@ describe('sample cli app', function () {
       };
 
       runApp(env, [], function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.colors.green).to.equal(env.YOLO_COLORS_GREEN);
@@ -195,6 +202,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.colors.green).to.equal(args[2]);
@@ -219,6 +227,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.colors.green).to.equal(args[2]);
@@ -247,6 +256,7 @@ describe('sample cli app', function () {
       ];
 
       runApp(env, args, function (err, out) {
+        if (err) { throw err; }
         out = parseJson(out);
 
         expect(out.food.nasty).to.equal(env.YOLO_FOOD_NASTY);
