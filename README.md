@@ -1,6 +1,8 @@
 ![rucola](images/logo.png)
 ======
 
+[![Build Status](https://travis-ci.org/maxkueng/rucola.svg)](https://travis-ci.org/maxkueng/rucola)
+
 _rucola_ is a unix-style **ru**ntime **co**nfiguration **l**o**a**der
 for Node.js apps that allows you to configure your application using
 configuration files in JSON, INI and YAML format, command-line
