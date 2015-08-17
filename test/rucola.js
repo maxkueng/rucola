@@ -1,24 +1,20 @@
 var rucola = require('../index');
-var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var path = require('path');
 var fs = require('fs');
 var expect = require('chai').expect;
 
-function runApp (env, args, callback) {
+function runApp (env, argv, callback) {
   var appPath = path.join(__dirname, 'yoloapp.js');
-  var out = '';
+  var args = '"' + argv.join('" "') + '"';
+  var cmd = appPath + ' ' + args;
 
-  var cmd = spawn(appPath, args, {
+  exec(cmd, {
     cwd: __dirname,
     env: env
-  });
 
-  cmd.stdout.on('data', function (chunk) {
-    out += chunk;
-  });
-
-  cmd.on('close', function () {
-    callback(out);
+  }, function (err, stdout, stderr) {
+    callback(err, stdout);
   });
 }
 
@@ -37,7 +33,7 @@ describe('sample cli app', function () {
 
     it('should read values from defaults', function (done) {
 
-      runApp([], [], function (out) {
+      runApp([], [], function (err, out) {
         out = parseJson(out);
 
         expect(out.colors.blue).to.equal('#0000FF');
@@ -55,7 +51,7 @@ describe('sample cli app', function () {
 
     it('should read values from a standard config path', function (done) {
 
-      runApp([], [], function (out) {
+      runApp([], [], function (err, out) {
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -77,7 +73,7 @@ describe('sample cli app', function () {
         HOME: path.join(__dirname, 'fakehome')
       };
 
-      runApp(env, [], function (out) {
+      runApp(env, [], function (err, out) {
         out = parseJson(out);
 
         expect(out.capital.china).to.equal('beijing');
@@ -103,7 +99,7 @@ describe('sample cli app', function () {
         '--config', './conf.ini'
       ];
 
-      runApp([], args, function (out) {
+      runApp([], args, function (err, out) {
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -124,7 +120,7 @@ describe('sample cli app', function () {
         '--config', './conf.yml'
       ];
 
-      runApp([], args, function (out) {
+      runApp([], args, function (err, out) {
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -145,7 +141,7 @@ describe('sample cli app', function () {
         '--config', './conf.json'
       ];
 
-      runApp([], args, function (out) {
+      runApp([], args, function (err, out) {
         out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
@@ -173,7 +169,7 @@ describe('sample cli app', function () {
         YOLO_OVER: 9000
       };
 
-      runApp(env, [], function (out) {
+      runApp(env, [], function (err, out) {
         out = parseJson(out);
 
         expect(out.colors.green).to.equal(env.YOLO_COLORS_GREEN);
@@ -198,7 +194,7 @@ describe('sample cli app', function () {
         '--retract-landinggear',
       ];
 
-      runApp([], args, function (out) {
+      runApp([], args, function (err, out) {
         out = parseJson(out);
 
         expect(out.colors.green).to.equal(args[2]);
@@ -222,7 +218,7 @@ describe('sample cli app', function () {
         '--retract-landinggear',
       ];
 
-      runApp([], args, function (out) {
+      runApp([], args, function (err, out) {
         out = parseJson(out);
 
         expect(out.colors.green).to.equal(args[2]);
@@ -250,7 +246,7 @@ describe('sample cli app', function () {
         '--w00t'
       ];
 
-      runApp(env, args, function (out) {
+      runApp(env, args, function (err, out) {
         out = parseJson(out);
 
         expect(out.food.nasty).to.equal(env.YOLO_FOOD_NASTY);
