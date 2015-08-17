@@ -1,20 +1,25 @@
 var rucola = require('../index');
-var exec = require('child_process').exec;
+var fork = require('child_process').fork;
 var path = require('path');
 var fs = require('fs');
 var expect = require('chai').expect;
 
 function runApp (env, argv, callback) {
   var appPath = path.join(__dirname, 'yoloapp.js');
-  var args = '"' + argv.join('" "') + '"';
-  var cmd = 'node ' + appPath + ' ' + args;
+  var out = '';
 
-  exec(cmd, {
+  var p = fork(appPath, argv, {
     cwd: __dirname,
+    silent: true,
     env: env
+  });
 
-  }, function (err, stdout, stderr) {
-    callback(err, stdout);
+  p.stdout.on('data', function (chunk) {
+    out += chunk;
+  });
+
+  p.on('close', function () {
+    callback(null, out);
   });
 }
 
