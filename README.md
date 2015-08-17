@@ -6,7 +6,7 @@ for Node.js apps that allows you to configure your application using
 configuration files in JSON, INI and YAML format, command-line
 arguments, and environment variables.  
 It's heavily inspired by the amazing [rc][rc] module but it does things
-slightly different.
+slightly [different](#difference-between-rucola-and-rc).
 
 ## Sample Usage
 
@@ -83,7 +83,7 @@ possible value but you should provide default values for all essential
 settings so your app can run without a configuration file.
 
 The defaults can be either an object, or a string in any of the
-supported formats.
+supported [formats](#file-formats).
 
 ```js
 var defaults = {
@@ -431,9 +431,10 @@ becomes:
 
 ## Difference Between rucola And rc
 
-The big difference between rucola and rc is that rucola normalizes
-everything so you can use environment variables and command-line
-arguments in a way a user would expect to use them.
+The big difference between rucola and rc is that rucola
+[normalizes](#normalization) everything so you can use environment
+variables and command-line arguments in a way a user would expect to use
+them.
 
 If your app name is "myapp" and you wanted the following config object,
 
