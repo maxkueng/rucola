@@ -20,7 +20,7 @@ module.exports = function (name, defaults, aliases, argv) {
     : defaults) || {};
 
   argv = utils.argv(argv || minimist(process.argv.splice(2), {
-    alias: aliases 
+    alias: aliases
   }), aliases);
 
   var env = utils.env(name + '_');
@@ -56,6 +56,7 @@ module.exports = function (name, defaults, aliases, argv) {
   var allConfigFiles = [
     !isWin  &&  path.join(etc, name, 'config'),
     !isWin  &&  path.join(etc, name + 'rc'),
+    !isWin  &&  path.join(etc, 'xdg', name, name + '.rc'),
     home    &&  path.join(home, '.config', name, 'config'),
     home    &&  path.join(home, '.config', name),
     home    &&  path.join(home, '.' + name, 'config'),
