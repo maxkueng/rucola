@@ -19,7 +19,9 @@
     "lib/utils.js"
   ],
   "scripts": {
-    "test": "mocha --ui bdd --reporter spec ./test/rucola.js"
+    "test": "mocha --ui bdd --reporter spec ./test/rucola.js",
+    "coverage": "rm -rf coverage; istanbul cover _mocha -- --recursive --reporter spec --bail",
+    "publish-coverage": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,9 @@
   },
   "devDependencies": {
     "chai": "^3.2.0",
-    "mocha": "^2.2.5"
+    "coveralls": "^2.11.4",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.2"
   }
 }
