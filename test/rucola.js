@@ -22,14 +22,23 @@ function runApp (env, args, callback) {
   });
 }
 
+function parseJson (json) {
+  try {
+    return JSON.parse(json);
+  } catch (ex) {
+    console.log(ex);
+    console.log(json);
+  }
+};
+
 describe('sample cli app', function () {
 
   describe('defaults', function () {
-  
+
     it('should read values from defaults', function (done) {
 
       runApp([], [], function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.colors.blue).to.equal('#0000FF');
         expect(out.colors.green).to.equal('#00FF00');
@@ -39,15 +48,15 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
   });
 
   describe('standard config file path', function () {
-  
+
     it('should read values from a standard config path', function (done) {
 
       runApp([], [], function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
         expect(out.animal.reptile).to.equal('lizard');
@@ -57,11 +66,11 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
   });
 
   describe('standard config file path from $HOME', function () {
-  
+
     it('should read values from standard config paths', function (done) {
 
       var env = {
@@ -69,7 +78,7 @@ describe('sample cli app', function () {
       };
 
       runApp(env, [], function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.capital.china).to.equal('beijing');
         expect(out.capital.japan).to.equal('tokyo');
@@ -83,11 +92,11 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
   });
 
   describe('config file specified by --config', function () {
-  
+
     it('should read values from a specified file in INI format', function (done) {
 
       var args = [
@@ -95,7 +104,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
         expect(out.animal.reptile).to.equal('lizard');
@@ -108,7 +117,7 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
     it('should read values from a specified file in YAML format', function (done) {
 
       var args = [
@@ -116,7 +125,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
         expect(out.animal.reptile).to.equal('lizard');
@@ -129,7 +138,7 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
     it('should read values from a specified file in JSON format', function (done) {
 
       var args = [
@@ -137,7 +146,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.animal.mammal).to.equal('bear');
         expect(out.animal.reptile).to.equal('lizard');
@@ -151,13 +160,13 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
   });
 
   describe('environment variables', function () {
 
     it('should read environment variables', function (done) {
-      
+
       var env = {
         YOLO_COLORS_GREEN: '#00CC00',
         YOLO_COLORS_RED: '#DD0000',
@@ -165,7 +174,7 @@ describe('sample cli app', function () {
       };
 
       runApp(env, [], function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.colors.green).to.equal(env.YOLO_COLORS_GREEN);
         expect(out.colors.red).to.equal(env.YOLO_COLORS_RED);
@@ -179,7 +188,7 @@ describe('sample cli app', function () {
   });
 
   describe('command-line arguments', function () {
-  
+
     it('should read command-line arguments', function (done) {
 
       var args = [
@@ -190,7 +199,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.colors.green).to.equal(args[2]);
         expect(out.colors.red).to.equal(args[4]);
@@ -214,7 +223,7 @@ describe('sample cli app', function () {
       ];
 
       runApp([], args, function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.colors.green).to.equal(args[2]);
         expect(out.colors.red).to.equal(args[4]);
@@ -242,7 +251,7 @@ describe('sample cli app', function () {
       ];
 
       runApp(env, args, function (out) {
-        out = JSON.parse(out);
+        out = parseJson(out);
 
         expect(out.food.nasty).to.equal(env.YOLO_FOOD_NASTY);
         expect(out.food.meh).to.equal(env.YOLO_FOOD_MEH);
@@ -253,7 +262,7 @@ describe('sample cli app', function () {
       });
 
     });
-  
+
   });
 
 });
@@ -261,7 +270,7 @@ describe('sample cli app', function () {
 describe('rucola', function () {
 
   describe('defaults as string', function () {
-  
+
     it('should read defaults as string in INI format', function () {
 
       var defaults = fs.readFileSync(path.join(__dirname, 'conf.ini'), 'utf-8');
@@ -296,11 +305,11 @@ describe('rucola', function () {
       expect(conf.animal.bird).to.equal('phoenix');
 
     });
-  
+
   });
 
   describe('.get()', function () {
-  
+
     it('should retreive values using .get(keyPath)', function () {
       var defaults = fs.readFileSync(path.join(__dirname, 'conf.yml'), 'utf-8');
       var conf = rucola('gettest', defaults);
@@ -308,11 +317,11 @@ describe('rucola', function () {
       expect(conf.get('animal.insect')).to.equal('bee');
       expect(conf.get('animal.dragon')).to.be.undefined;
     });
-  
+
   });
 
   describe('.checkedConfigs', function () {
-  
+
     it('should provide a list of checked configs through .checkedConfigs', function () {
 
       var conf = rucola('cctest');
@@ -322,11 +331,11 @@ describe('rucola', function () {
       expect(conf.checkedConfigs).to.contain('/etc/cctestrc');
 
     });
-  
+
   });
 
   describe('.usedConfigs', function () {
-  
+
     it('should provide a list of used configs through .usedConfigs', function () {
 
       var conf = rucola('uctest');
@@ -334,7 +343,7 @@ describe('rucola', function () {
       expect(conf.usedConfigs).to.be.an.Array;
 
     });
-  
+
   });
 
 });
