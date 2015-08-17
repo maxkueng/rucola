@@ -2,6 +2,7 @@
 ======
 
 [![Build Status](https://travis-ci.org/maxkueng/rucola.svg)](https://travis-ci.org/maxkueng/rucola)
+[![Coverage Status](https://coveralls.io/repos/maxkueng/rucola/badge.svg?branch=master&service=github)](https://coveralls.io/github/maxkueng/rucola?branch=master)
 
 _rucola_ is a unix-style **ru**ntime **co**nfiguration **l**o**a**der
 for Node.js apps that allows you to configure your application using
