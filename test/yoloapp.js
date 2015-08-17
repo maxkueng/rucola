@@ -20,4 +20,4 @@ var aliases = {
 
 var conf = rucola('yolo', defaults, aliases);
 
-console.log(JSON.stringify(conf, null, '  '));
+process.stdout.write(JSON.stringify(conf, null, '  '));
