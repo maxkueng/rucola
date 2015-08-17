@@ -7,7 +7,7 @@ var expect = require('chai').expect;
 function runApp (env, argv, callback) {
   var appPath = path.join(__dirname, 'yoloapp.js');
   var args = '"' + argv.join('" "') + '"';
-  var cmd = appPath + ' ' + args;
+  var cmd = 'node ' + appPath + ' ' + args;
 
   exec(cmd, {
     cwd: __dirname,
