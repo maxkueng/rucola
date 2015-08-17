@@ -278,7 +278,17 @@ describe('sample cli app', function () {
 
 });
 
-describe('rucola', function () {
+describe('module', function () {
+
+  describe('rucola', function () {
+  
+    it('should throw without an appname', function () {
+      expect(function () {
+        rucola();
+      }).to.throw();
+    });
+  
+  });
 
   describe('defaults as string', function () {
 
