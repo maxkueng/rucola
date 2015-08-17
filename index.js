@@ -19,7 +19,7 @@ module.exports = function (name, defaults, aliases, argv) {
     ? utils.parse(defaults)
     : defaults) || {};
 
-  argv = utils.argv(argv || minimist(process.argv.splice(2), {
+  argv = utils.argv(argv || minimist([].concat(process.argv).splice(2), {
     alias: aliases
   }), aliases);
 
