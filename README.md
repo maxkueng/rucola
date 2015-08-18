@@ -1,4 +1,4 @@
-![rucola](images/logo.png)
+![rucola](https://raw.githubusercontent.com/maxkueng/rucola/master/images/logo.png)
 ======
 
 [![Build Status](https://travis-ci.org/maxkueng/rucola.svg)](https://travis-ci.org/maxkueng/rucola)
