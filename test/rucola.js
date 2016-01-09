@@ -177,7 +177,8 @@ describe('sample cli app', function () {
       var env = {
         YOLO_COLORS_GREEN: '#00CC00',
         YOLO_COLORS_RED: '#DD0000',
-        YOLO_OVER: 9000
+        YOLO_OVER: 9000,
+        YOLO_DONKEY_MINERALS_PLANNING_STEP: 'wave'
       };
 
       runApp(env, [], function (err, out) {
@@ -187,6 +188,7 @@ describe('sample cli app', function () {
         expect(out.colors.green).to.equal(env.YOLO_COLORS_GREEN);
         expect(out.colors.red).to.equal(env.YOLO_COLORS_RED);
         expect(out.over).to.equal('' + env.YOLO_OVER);
+        expect(out.donkey.minerals.planning.step).to.equal(env.YOLO_DONKEY_MINERALS_PLANNING_STEP);
 
         done();
       });
@@ -204,6 +206,7 @@ describe('sample cli app', function () {
         '--colors-green', 'emerald',
         '--colors-red', 'rose',
         '--retract-landinggear',
+        '--missing-nails-plural=slope'
       ];
 
       runApp([], args, function (err, out) {
@@ -213,6 +216,7 @@ describe('sample cli app', function () {
         expect(out.colors.green).to.equal(args[2]);
         expect(out.colors.red).to.equal(args[4]);
         expect(out.retract.landinggear).to.be.true;
+        expect(out.missing.nails.plural).to.equal('slope');
         expect(out._[0]).to.equal(args[0]);
 
         done();
@@ -281,13 +285,13 @@ describe('sample cli app', function () {
 describe('module', function () {
 
   describe('rucola', function () {
-  
+
     it('should throw without an appname', function () {
       expect(function () {
         rucola();
       }).to.throw();
     });
-  
+
   });
 
   describe('defaults as string', function () {
