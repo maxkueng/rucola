@@ -8,7 +8,7 @@ const isWin = process.platform === 'win32';
 const etc = '/etc';
 const home = isWin ? process.env.USERPROFILE : process.env.HOME;
 
-module.exports = function (name, defaults, aliases, argv) {
+module.exports = function rucola(name, defaults, aliases, argv) {
   if (typeof name !== 'string') {
     throw new Error('name argument must be a string');
   }
