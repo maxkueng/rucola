@@ -2,6 +2,8 @@
 ======
 
 [![Build Status](https://travis-ci.org/maxkueng/rucola.svg)](https://travis-ci.org/maxkueng/rucola)
+[![codebeat badge](https://codebeat.co/badges/38582c34-4c9c-456c-893e-4261bc214b7b)](https://codebeat.co/projects/github-com-maxkueng-rucola-master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/06b8b039a4be48cfa6f07b52852303cf)](https://www.codacy.com/app/github_105/rucola?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=maxkueng/rucola&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/maxkueng/rucola/badge.svg?branch=master&service=github)](https://coveralls.io/github/maxkueng/rucola?branch=master)
 
 _rucola_ is a unix-style **ru**ntime **co**nfiguration **l**o**a**der
