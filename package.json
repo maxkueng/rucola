@@ -21,8 +21,8 @@
   "scripts": {
     "test": "mocha --ui bdd --reporter spec ./test/rucola.js",
     "coverage": "rm -rf coverage; istanbul cover _mocha -- --recursive --reporter spec --bail",
-    "lint": "eslint ./*.js",
-    "lint:fix": "eslint --fix ./*.js",
+    "lint": "eslint ./*.js ./lib/*",
+    "lint:fix": "eslint --fix ./*.js ./lib/*",
     "publish-coverage": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
