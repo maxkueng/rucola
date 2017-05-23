@@ -1,12 +1,12 @@
-var path = require('path');
-var minimist = require('minimist');
-var utils = require('./lib/utils');
-var deepExtend = require('deep-extend');
-var seek = require('flatnest').seek;
+const path = require('path');
+const minimist = require('minimist');
+const utils = require('./lib/utils');
+const deepExtend = require('deep-extend');
+const seek = require('flatnest').seek;
 
-var isWin = process.platform === 'win32';
-var etc = '/etc';
-var home = isWin ? process.env.USERPROFILE : process.env.HOME;
+const isWin = process.platform === 'win32';
+const etc = '/etc';
+const home = isWin ? process.env.USERPROFILE : process.env.HOME;
 
 module.exports = function (name, defaults, aliases, argv) {
   if (typeof name !== 'string') {
@@ -20,32 +20,32 @@ module.exports = function (name, defaults, aliases, argv) {
     : defaults) || {};
 
   argv = utils.argv(argv || minimist([].concat(process.argv).splice(2), {
-    alias: aliases
+    alias: aliases,
   }), aliases);
 
-  var env = utils.env(name + '_');
+  const env = utils.env(`${name}_`);
 
-  function removeDuplicates (item, index, list) {
+  function removeDuplicates(item, index, list) {
     return item && list.indexOf(item) === index;
   }
 
-  function tupleify (item) {
-    return [ item, null ];
+  function tupleify(item) {
+    return [item, null];
   }
 
-  function detupleify (index) {
+  function detupleify(index) {
     return function (tuple) {
       return tuple[index];
     };
   }
 
-  function removeFalsy (tuple) {
+  function removeFalsy(tuple) {
     return !!tuple[1];
   }
 
-  function loadConfig (tuple) {
-    var filePath = tuple[0];
-    var content = utils.file(filePath);
+  function loadConfig(tuple) {
+    const filePath = tuple[0];
+    const content = utils.file(filePath);
     if (content) {
       tuple[1] = utils.parse(content);
     }
@@ -53,47 +53,47 @@ module.exports = function (name, defaults, aliases, argv) {
     return tuple;
   }
 
-  var allConfigFiles = [
-    !isWin  &&  path.join(etc, name, 'config'),
-    !isWin  &&  path.join(etc, name + 'rc'),
-    !isWin  &&  path.join(etc, 'xdg', name, name + '.rc'),
-    home    &&  path.join(home, '.config', name, 'config'),
-    home    &&  path.join(home, '.config', name),
-    home    &&  path.join(home, '.' + name, 'config'),
-    home    &&  path.join(home, '.' + name + 'rc'),
-                utils.find('.' + name + 'rc'),
-                argv.config
+  const allConfigFiles = [
+    !isWin && path.join(etc, name, 'config'),
+    !isWin && path.join(etc, `${name}rc`),
+    !isWin && path.join(etc, 'xdg', name, `${name}.rc`),
+    home && path.join(home, '.config', name, 'config'),
+    home && path.join(home, '.config', name),
+    home && path.join(home, `.${name}`, 'config'),
+    home && path.join(home, `.${name}rc`),
+    utils.find(`.${name}rc`),
+    argv.config,
   ]
     .filter(removeDuplicates);
 
-  var configTuples = allConfigFiles
+  const configTuples = allConfigFiles
     .map(tupleify)
     .map(loadConfig)
     .filter(removeFalsy);
 
-  var usedConfigFiles = configTuples
+  const usedConfigFiles = configTuples
     .map(detupleify(0));
 
-  var configValues = configTuples
+  const configValues = configTuples
     .map(detupleify(1));
 
-  var conf = deepExtend.apply(null, [ utils.normalize(defaults) ].concat(configValues, env, argv));
+  const conf = deepExtend(...[utils.normalize(defaults)].concat(configValues, env, argv));
 
   Object.defineProperty(conf, 'usedConfigs', {
     enumerable: false,
     writable: false,
-    value: usedConfigFiles
+    value: usedConfigFiles,
   });
 
   Object.defineProperty(conf, 'checkedConfigs', {
     enumerable: false,
     writable: false,
-    value: allConfigFiles
+    value: allConfigFiles,
   });
 
   Object.defineProperty(conf, 'get', {
     enumerable: false,
-    value: seek.bind(null, conf)
+    value: seek.bind(null, conf),
   });
 
   return conf;
