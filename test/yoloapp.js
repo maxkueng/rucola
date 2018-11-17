@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 
-var rucola = require('../rucola.bundle.js');
+const rucola = require('../rucola.bundle.js');
 
-var defaults = {
+const defaults = {
   colors: {
     blue: '#0000FF',
     green: '#00FF00',
-    red: '#FF0000'
-  }
+    red: '#FF0000',
+  },
 };
 
-var aliases = {
+const aliases = {
   b: 'colors.blue',
   g: 'colors.green',
   r: 'colors.red',
   R: 'recursive',
-  v: 'version'
+  v: 'version',
 };
 
-var conf = rucola('yolo', defaults, aliases);
+const conf = rucola('yolo', defaults, aliases);
 
 process.stdout.write(JSON.stringify(conf, null, '  '));
