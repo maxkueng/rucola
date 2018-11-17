@@ -11,40 +11,57 @@ for Node.js apps that allows you to configure your application using
 configuration files in JSON, INI and YAML format, command-line
 arguments, and environment variables.  
 It's heavily inspired by the amazing [rc][rc] module but it does things
-slightly [different](#difference-between-rucola-and-rc).
+[differently](#difference-between-rucola-and-rc).
 
 ## Sample Usage
+
+### Absolute Minimal Setup
+
+You don't need more than this to add runtime configuration with command-line
+flags, environment variables and config files in INI, YAML and JSON to your
+app.
+
+```js
+import rucola from 'rucola';
+
+const conf = rucola('myapp');
+conf.get('myvalue');
+```
+
+### Slightly More Comprehensive Setup
 
 The only argument required is `appname`. But in this example we're also
 providing default values and defining some aliases.
 
 ```js
+// Import the module
+import rucola from 'rucola';
 
 // The name of your app. It should be a string with no spaces and
 // special characters. Kind of like an npm module name.
-var appname = 'myapp';
+const appname = 'myapp';
 
 // An object containing your default values. Make sure you cover
 // everything essential to your app.
-var defaults = {
+const defaults = {
   connection: {
     port: 1337,
-    host: '127.0.0.1'
-  }
+    host: '127.0.0.1',
+  },
 };
 
 // An object mapping aliases to config properties. Use the dot-notation
 // to define aliases for nested properties.
-var aliases = {
+const aliases = {
   p: 'connection.port',
   h: 'connection.host',
   r: 'color.red',
   R: 'recursive',
-  v: 'version'
+  v: 'version',
 };
 
 // Load the configuration.
-var conf = require('rucola')(appname, defaults, aliases);
+const conf = rucola(appname, defaults, aliases);
 
 // use conf.get() to read config variables 
 // without throwing TypeErrors.
@@ -71,7 +88,8 @@ Loads your configuration from all sources and returns an object
 containing all values.
 
 ```js
-var conf = require('rucola')('myapp', defaults, aliases);
+import rucola from 'rucola';
+const conf = rucola('myapp', defaults, aliases);
 ```
 
 **`appname`**
@@ -90,25 +108,30 @@ settings so your app can run without a configuration file.
 The defaults can be either an object, or a string in any of the
 supported [formats](#file-formats).
 
+Using an object:
 ```js
-var defaults = {
+import rucola from 'rucola';
+
+const defaults = {
   connection: {
     host: 'localhost',
-    port: 8080
-  }
+    port: 8080,
+  },
 };
 
-var conf = require('rucola')('myapp', defaults);
+const conf = rucola('myapp', defaults);
 ```
 
+Reading the defaults as a string from an INI file:
 ```js
-var path = require('path');
-var fs = require('fs');
+import path from 'path';
+import fs from 'fs';
+import rucola from 'rucola';
 
 // Load defaults from an external file in any supported format.
-var defaults = fs.readFileSync(path.join(__dirname, 'defaults.ini'), 'utf-8');
+const defaults = fs.readFileSync(path.join(__dirname, 'defaults.ini'), 'utf-8');
 
-var conf = require('rucola')('myapp', defaults);
+const conf = rucola('myapp', defaults);
 ```
 
 **`aliases`**
@@ -118,21 +141,23 @@ for `--user`) for command-line arguments. If you want to define an alias
 for a nested property use the dot-notation.
 
 ```js
-var defaults = {
+import rucola from 'rucola';
+
+const defaults = {
   connection: {
     host: 'localhost',
-    port: 8080
-  }
+    port: 8080,
+  },
 };
 
-var aliases = {
+const aliases = {
   h: 'connection.host',
   p: 'connection.port',
   v: 'version',
-  V: 'verbose'
+  V: 'verbose',
 };
 
-var conf = require('rucola')('myapp', defaults, aliases);
+const conf = rucola('myapp', defaults, aliases);
 ```
 
 Now you can use them as command-line arguments:
@@ -154,14 +179,16 @@ without throwing TypeErrors. You can use the dot-notation to access
 nested properties.
 
 ```js
-var defaults = {
+import rucola from 'rucola';
+
+const defaults = {
   connection: {
     host: 'localhost',
-    port: 8080
-  }
+    port: 8080,
+  },
 };
 
-var conf = require('rucola')('myapp', defaults);
+const conf = rucola('myapp', defaults);
 
 conf.get('connection.host');
 // 'localhost'
@@ -176,12 +203,36 @@ because `conf.server` is undefined.
 #### arr = conf.checkedConfigs
 
 The `conf.checkedConfigs` property is an array containing all file paths
-that have been checked values.
+that have been checked.
+
+```js
+import rucola from 'rucola';
+
+const conf = rucola('myapp');
+console.log(conf.checkedConfigs);
+
+// [ '/etc/myapp/config',
+//   '/etc/myapprc',
+//   '/etc/xdg/myapp/myapp.rc',
+//   '/home/user/.config/myapp/config',
+//   '/home/user/.config/myapp',
+//   '/home/user/.myapp/config',
+//   '/home/user/.myapprc' ]
+```
 
 #### arr = conf.usedConfigs
 
-The `conf.usedConfigs` property is an arry containing all file paths
+The `conf.usedConfigs` property is an array containing all file paths
 from which values have been loaded from.
+
+```js
+import rucola from 'rucola';
+
+const conf = rucola('myapp');
+console.log(conf.usedConfigs);
+
+// [ '/etc/myapprc', '/home/user/.config/myapp' ]
+```
 
 ### Normalization
 
@@ -304,7 +355,7 @@ SERVER.Connection.Port: 9000
 
 Given your application name is "myapp", rucola will load configuration
 values from the following sources in this paricular order from bottom to
-top.
+top, and merge the values in the same order.
 
  - command-line arguments
  - environment variables
@@ -467,7 +518,7 @@ and command-line arguments like this:
 myapp --connection.host localhost --connection.port 9000
 ```
 
-which feels unnatural in a unix-like environment.
+which is not what you'd expect in a unix-like environment.
 
 With rucola you can use environment variables like this:
 
@@ -494,7 +545,7 @@ which is much closer to what a user might expect.
  - Support for aliases
  - Support YAML format
 
-### Things that rc can and rucola can't (yet):
+### Things that rc can and rucola can't:
 
  - Swap out minimist for a different option parser
 
