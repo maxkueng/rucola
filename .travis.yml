@@ -6,4 +6,5 @@ node_js:
   - "9"
   - "10"
 script:
+  - npm test
   - npm run publish-coverage
