@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var rucola = require('../index');
+var rucola = require('../rucola.bundle.js');
 
 var defaults = {
   colors: {

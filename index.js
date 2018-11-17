@@ -1,25 +1,23 @@
-const path = require('path');
-const minimist = require('minimist');
-const utils = require('./lib/utils');
-const deepExtend = require('deep-extend');
-const seek = require('flatnest').seek;
+import path from 'path';
+import minimist from 'minimist';
+import deepExtend from 'deep-extend';
+import { seek } from 'flatnest';
+import * as utils from './lib/utils';
 
 const isWin = process.platform === 'win32';
 const etc = '/etc';
 const home = isWin ? process.env.USERPROFILE : process.env.HOME;
 
-module.exports = function rucola(name, defaults, aliases, argv) {
+export default function rucola(name, defaultArgs = {}, aliases = {}, customArgv) {
   if (typeof name !== 'string') {
     throw new Error('name argument must be a string');
   }
 
-  aliases = aliases || {};
+  const defaults = typeof defaultArgs === 'string'
+    ? utils.parse(defaultArgs)
+    : defaultArgs;
 
-  defaults = (typeof defaults === 'string'
-    ? utils.parse(defaults)
-    : defaults) || {};
-
-  argv = utils.argv(argv || minimist([].concat(process.argv).splice(2), {
+  const argv = utils.argv(customArgv || minimist([].concat(process.argv).splice(2), {
     alias: aliases,
   }), aliases);
 
@@ -34,9 +32,7 @@ module.exports = function rucola(name, defaults, aliases, argv) {
   }
 
   function detupleify(index) {
-    return function (tuple) {
-      return tuple[index];
-    };
+    return tuple => tuple[index];
   }
 
   function removeFalsy(tuple) {
@@ -44,10 +40,14 @@ module.exports = function rucola(name, defaults, aliases, argv) {
   }
 
   function loadConfig(tuple) {
-    const filePath = tuple[0];
+    const [filePath] = tuple;
+
     const content = utils.file(filePath);
     if (content) {
-      tuple[1] = utils.parse(content);
+      return [
+        filePath,
+        utils.parse(content),
+      ];
     }
 
     return tuple;
@@ -97,4 +97,4 @@ module.exports = function rucola(name, defaults, aliases, argv) {
   });
 
   return conf;
-};
+}

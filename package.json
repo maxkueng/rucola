@@ -19,11 +19,13 @@
     "lib/utils.js"
   ],
   "scripts": {
+    "build": "rollup -c",
     "test": "mocha --ui bdd --reporter spec ./test/rucola.js",
     "coverage": "rm -rf coverage; istanbul cover _mocha -- --recursive --reporter spec --bail",
-    "lint": "eslint ./*.js ./lib/*",
-    "lint:fix": "eslint --fix ./*.js ./lib/*",
-    "publish-coverage": "cat coverage/lcov.info | coveralls"
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "publish-coverage": "cat coverage/lcov.info | coveralls",
+    "prepack": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -40,9 +42,22 @@
     "yaml-js": "^0.1.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "babel-eslint": "^10.0.1",
     "chai": "^3.2.0",
     "coveralls": "^2.11.4",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-import-resolver-babel-module": "^4.0.0",
+    "eslint-plugin-import": "^2.14.0",
     "istanbul": "^0.3.17",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "rollup": "^0.67.1",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0"
   }
 }

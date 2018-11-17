@@ -1,4 +1,4 @@
-var rucola = require('../index');
+var rucola = require('../rucola.bundle.js');
 var fork = require('child_process').fork;
 var path = require('path');
 var fs = require('fs');
