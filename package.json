@@ -22,6 +22,7 @@
     "test:js": "nyc ava test/test.js",
     "test:code": "npm-run-all lint test:js",
     "test": "npm-run-all -s build test:code",
+    "coverage:html": "nyc report --reporter=html",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "publish-coverage": "nyc report --reporter=text-lcov | coveralls",
