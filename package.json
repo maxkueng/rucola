@@ -13,10 +13,9 @@
     "argv",
     "args"
   ],
-  "main": "index.js",
+  "main": "rucola.bundle.js",
   "files": [
-    "index.js",
-    "lib/utils.js"
+    "rucola.bundle.js"
   ],
   "scripts": {
     "build": "rollup -c",
