@@ -552,7 +552,9 @@ which is much closer to what a user might expect.
 
 ## License
 
-MIT
+Copyright (c) 2015 - 2018 Max Kueng and contributors
+
+MIT License
 
 
 [rc]: https://www.npmjs.com/package/rc
